@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Math Maroc | منصة الرياضيات</title>
+<style>
+:root{--blue:#1769d2;--dark:#123b70;--light:#edf5ff}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f8fd;color:#172b46}
+header{background:white;padding:16px 7%;display:flex;
+justify-content:space-between;align-items:center;
+box-shadow:0 2px 12px #123b7010;position:sticky;top:0}
+.logo{font-size:25px;font-weight:bold;color:var(--blue)}
+button,select,input{font:inherit}
+button{cursor:pointer;border:0;border-radius:9px;padding:11px 17px}
+.primary{background:var(--blue);color:white}
+.hero{background:linear-gradient(120deg,#e8f3ff,#c9e1ff);
+padding:65px 8%;text-align:center}
+.hero h1{font-size:36px;color:var(--dark)}
+.hero p{line-height:1.9}
+section{padding:35px 7%;max-width:1200px;margin:auto}
+h2{color:var(--dark)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:17px}
+.card{background:white;padding:23px;border-radius:15px;
+box-shadow:0 4px 18px #163d7010;border:1px solid #e6eef8}
+.card h3{color:var(--blue)}
+.card button{margin-top:10px}
+select,input{padding:12px;border:1px solid #cbd9e9;
+border-radius:9px;background:white;max-width:100%}
+#content{background:white;border-radius:14px;padding:22px;
+line-height:2;margin-top:20px}
+footer{text-align:center;background:var(--dark);
+color:white;padding:28px}
+.hidden{display:none}
+.question{padding:15px;background:var(--light);
+border-radius:10px;margin:12px 0}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">📐 Math Maroc</div>
+ <div>
+  <button onclick="setLang('ar')">العربية</button>
+  <button onclick="setLang('fr')">FR</button>
+ </div>
+</header>
+
+<div class="hero">
+ <h1 id="welcome">مرحبا بك في Math Maroc</h1>
+ <p id="intro">منصتك المجانية لتعلم الرياضيات
+ من الأولى إعدادي حتى الثانية باكالوريا.</p>
+ <button class="primary" onclick="document.getElementById('levels').scrollIntoView()">
+ ابدأ التعلم
+ </button>
+</div>
+
+<section id="levels">
+ <h2 id="levelTitle">📚 اختر مستواك الدراسي</h2>
+ <div class="grid" id="levelGrid"></div>
+</section>
+
+<section>
+ <h2 id="resourcesTitle">📖 الموارد التعليمية</h2>
+ <div class="grid" id="resources"></div>
+</section>
+
+<section id="workspace" class="hidden">
+ <h2 id="selectedLevel"></h2>
+ <input id="search" placeholder="ابحث عن درس..."
+ oninput="showLessons()">
+ <div id="content"></div>
+</section>
+
+<footer>
+ <h2 style="color:white">Math Maroc</h2>
+ <p>التعلم حق للجميع • L'apprentissage pour tous</p>
+ <p>© 2026 Math Maroc</p>
+</footer>
+
+<script>
+let lang='ar',current=0;
+const levels=[
+ ['الأولى إعدادي','1ère année collège'],
+ ['الثانية إعدادي','2ème année collège'],
+ ['الثالثة إعدادي','3ème année collège'],
+ ['الجذع المشترك','Tronc commun'],
+ ['الأولى باكالوريا','1ère Bac'],
+ ['الثانية باكالوريا','2ème Bac']
+];
+const data=[
+ ['الأعداد والعمليات','Les nombres et opérations',
+  'العمليات على الأعداد الصحيحة والعشرية والكسور.',
+  'Opérations sur les nombres entiers, décimaux et fractions.'],
+ ['الحساب الحرفي','Calcul littéral',
+  'التعبيرات الجبرية والنشر والتعميل.',
+  'Expressions algébriques, développement et factorisation.'],
+ ['المعادلات','Équations',
+  'حل المعادلات من الدرجة الأولى.',
+  'Résolution des équations du premier degré.'],
+ ['الدوال','Les fonctions',
+  'مفهوم الدالة والتمثيل المبياني.',
+  'Notion de fonction et représentation graphique.'],
+ ['الهندسة','Géométrie',
+  'المستقيمات والزوايا والمثلثات.',
+  'Droites, angles et triangles.'],
+ ['الإحصاء','Statistiques',
+  'تنظيم البيانات وحساب المعدل.',
+  'Organisation des données et calcul de moyenne.']
+];
+const resources=[
+ ['📘','الدروس','Cours'],
+ ['✍️','التمارين','Exercices'],
+ ['📝','الفروض والامتحانات','Devoirs et examens'],
+ ['🧠','اختبر نفسك','Quiz']
+];
+function setLang(l){
+ lang=l;
+ document.documentElement.lang=l;
+ document.documentElement.dir=l==='ar'?'rtl':'ltr';
+ document.getElementById('welcome').textContent=
+ l==='ar'?'مرحبا بك في Math Maroc':'Bienvenue sur Math Maroc';
+ document.getElementById('intro').textContent=
+ l==='ar'?'منصتك المجانية لتعلم الرياضيات من الأولى إعدادي حتى الثانية باكالوريا.':
+ 'Ta plateforme gratuite de mathématiques du collège au lycée.';
+ document.getElementById('levelTitle').textContent=
+ l==='ar'?'📚 اختر مستواك الدراسي':'📚 Choisissez votre niveau';
+ document.getElementById('resourcesTitle').textContent=
+ l==='ar'?'📖 الموارد التعليمية':'📖 Ressources pédagogiques';
+ document.getElementById('search').placeholder=
+ l==='ar'?'ابحث عن درس...':'Rechercher un cours...';
+ renderLevels();renderResources();showLessons();
+}
+function renderLevels(){
+ document.getElementById('levelGrid').innerHTML=levels.map((v,i)=>`
+ <div class="card">
+ <h3>📐 ${v[lang==='ar'?0:1]}</h3>
+ <p>${lang==='ar'?'دروس وتمارين وملخصات':'Cours, exercices et résumés'}</p>
+ <button class="primary" onclick="openLevel(${i})">
+ ${lang==='ar'?'اكتشف المستوى':'Découvrir'}
+ </button></div>`).join('');
+}
+function renderResources(){
+ document.getElementById('resources').innerHTML=resources.map((v,i)=>`
+ <div class="card">
+ <h3>${v[0]} ${v[lang==='ar'?1:2]}</h3>
+ <button class="primary" onclick="resource(${i})">
+ ${lang==='ar'?'فتح':'Ouvrir'}
+ </button></div>`).join('');
+}
+function openLevel(i){
+ current=i;
+ document.getElementById('workspace').classList.remove('hidden');
+ document.getElementById('selectedLevel').textContent=
+ levels[i][lang==='ar'?0:1];
+ showLessons();
+ document.getElementById('workspace').scrollIntoView();
+}
+function showLessons(){
+ let q=document.getElementById('search').value.toLowerCase();
+ let list=data.filter(x=>x[lang==='ar'?0:1].toLowerCase().includes(q));
+ document.getElementById('content').innerHTML=
+ '<h3>'+ (lang==='ar'?'الدروس المتاحة':'Cours disponibles')+'</h3>'+
+ list.map(x=>`<div class="question">
+ <strong>${x[lang==='ar'?0:1]}</strong>
+ <p>${x[lang==='ar'?2:3]}</p>
+ </div>`).join('');
+}
+function resource(i){
+ if(i===3){quiz();return;}
+ document.getElementById('workspace').classList.remove('hidden');
+ document.getElementById('selectedLevel').textContent=
+ resources[i][lang==='ar'?1:2];
+ document.getElementById('content').innerHTML=
+ '<p>'+ (lang==='ar'?
+ 'يمكنك استعمال فهرس الدروس للبدء بالمراجعة. أضف ملفات الدروس والفروض الخاصة بكل مستوى هنا.':
+ 'Consultez les cours et ajoutez ici les fiches et devoirs de chaque niveau.')+'</p>';
+ document.getElementById('workspace').scrollIntoView();
+}
+function quiz(){
+ document.getElementById('workspace').classList.remove('hidden');
+ document.getElementById('selectedLevel').textContent=
+ lang==='ar'?'اختبر معلوماتك':'Testez vos connaissances';
+ document.getElementById('content').innerHTML=`
+ <h3>${lang==='ar'?'كم يساوي 5 + 7 ؟':'Combien font 5 + 7 ?'}</h3>
+ <div class="question">
+ <button onclick="answer(10)">10</button>
+ <button onclick="answer(12)">12</button>
+ <button onclick="answer(14)">14</button>
+ </div><p id="result"></p>`;
+ document.getElementById('workspace').scrollIntoView();
+}
+function answer(n){
+ document.getElementById('result').textContent=
+ n===12?(lang==='ar'?'أحسنت! إجابة صحيحة 🎉':'Bravo ! Bonne réponse 🎉'):
+ (lang==='ar'?'حاول مرة أخرى':'Réessayez');
+}
+renderLevels();renderResources();
+</script>
+</body>
+</html>
